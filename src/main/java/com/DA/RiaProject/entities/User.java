@@ -27,7 +27,7 @@ public class User extends BaseEntity {
     public User() {
     }
 
-    @NotBlank
+    @NotBlank(message = "first name shouldn't be empty")
     @Column(name = "first_name")
     public String getFirstName() {
         return firstName;
@@ -47,7 +47,7 @@ public class User extends BaseEntity {
     }
 
     @Column(name = "age")
-    @Positive
+    @Positive(message = "age should be above zero")
     public int getAge() {
         return age;
     }
@@ -56,7 +56,7 @@ public class User extends BaseEntity {
         this.age = age;
     }
 
-    @NotBlank
+    @NotBlank(message = "nickname shouldn't be empty")
     @Column(name = "nickname")
     public String getNickname() {
         return nickname;
@@ -67,7 +67,7 @@ public class User extends BaseEntity {
     }
 
     @Email
-    @NotBlank
+    @NotBlank(message = "password can't be empty")
     @Column(name = "email")
     public String getEmail() {
         return email;

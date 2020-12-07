@@ -1,5 +1,8 @@
 package com.DA.RiaProject.security;
 
+import com.DA.RiaProject.exceptions.CustomAuthenticationFailureHandler;
+import com.DA.RiaProject.exceptions.CustomLoginSuccessHandler;
+import com.DA.RiaProject.exceptions.CustomLogoutHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +13,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -27,29 +33,42 @@ public class SpringSecurityWebConfig extends WebSecurityConfigurerAdapter {
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder(12);
     }
+    @Bean
+    public AuthenticationFailureHandler customAuthenticationFailureHandler() {
+        return new CustomAuthenticationFailureHandler();
+    }
 
+    @Bean
+    public AuthenticationSuccessHandler loginSuccessHandler() {
+        return new CustomLoginSuccessHandler();
+    }
+
+    @Bean
+    public LogoutSuccessHandler customLogoutHandler(){
+        return new CustomLogoutHandler();
+    }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers("/user/registration").permitAll()
-                .antMatchers("/css/**").permitAll()
-                .antMatchers("/js/**").permitAll()
+                .antMatchers("/registration").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/user/**").hasAnyRole("USER", "ADMIN")
                 .anyRequest()
                 .authenticated()
                 .and()
+                .authorizeRequests()
+                .and()
                 .formLogin()
-                .loginPage("/login")
-                .defaultSuccessUrl("/index", true)
+                .successHandler(loginSuccessHandler())
+                .failureHandler(customAuthenticationFailureHandler())
                 .permitAll()
                 .and()
                 .logout()
-                .permitAll()
-                .logoutSuccessUrl("/login");
+                .logoutSuccessHandler(customLogoutHandler())
+                .and();
     }
 
     @Bean
