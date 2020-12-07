@@ -1,2 +1,24 @@
-package com.DA.RiaProject.service;public interface UserService {
+package com.DA.RiaProject.service;
+
+import com.DA.RiaProject.entities.User;
+import com.DA.RiaProject.entities.UserRole;
+import com.DA.RiaProject.entities.UserStatus;
+import com.DA.RiaProject.exceptions.UserEmailExistsException;
+
+import java.util.List;
+
+public interface UserService {
+
+    void create(User user) throws UserEmailExistsException;
+    User getUser(String nickname);
+    User getUser(Integer id);
+    void delete(Integer id);
+    void update(User user);
+    User updateRole(Integer id, UserRole userRole);
+    User updateStatus(Integer id, UserStatus status);
+    List<User> getList();
+    List<User> getListNew();
+    List<User> getListActive();
+    List<User> getListDisabled();
+
 }
