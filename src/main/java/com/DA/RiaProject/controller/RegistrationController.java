@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
-public class RegistrationController {
+public class    RegistrationController {
     private UserService userService;
 
     @Autowired
