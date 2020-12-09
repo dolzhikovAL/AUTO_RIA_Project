@@ -1,4 +1,4 @@
-package com.DA.RiaProject.response;
+package com.DA.RiaProject.entities.search.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
