@@ -2,6 +2,7 @@ package com.DA.RiaProject.controller;
 
 import com.DA.RiaProject.entities.search.request.CustomRequest;
 import com.DA.RiaProject.entities.search.searchid.IdSearchResponse;
+import com.DA.RiaProject.service.HttpClientService;
 import com.DA.RiaProject.service.OkHttpSearchServiceImpl;
 import com.DA.RiaProject.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,12 +16,12 @@ import java.io.IOException;
 @RestController
 @RequestMapping(path = "/search")
 public class SearchRequestController {
-    private OkHttpSearchServiceImpl httpClientService;
+    private HttpClientService httpClientService;
     private ObjectMapper mapper;
     private UserService userService;
 
     @Autowired
-    public SearchRequestController(OkHttpSearchServiceImpl httpClientService, UserService userService) {
+    public SearchRequestController(HttpClientService httpClientService, UserService userService) {
         this.httpClientService = httpClientService;
         this.userService = userService;
     }

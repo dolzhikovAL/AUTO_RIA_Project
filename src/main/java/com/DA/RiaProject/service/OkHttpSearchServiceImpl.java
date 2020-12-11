@@ -1,6 +1,7 @@
 package com.DA.RiaProject.service;
 
 import com.DA.RiaProject.dao.CustomRequestRepository;
+import com.DA.RiaProject.entities.ResponseMapper;
 import com.DA.RiaProject.entities.search.request.CustomRequest;
 import com.DA.RiaProject.entities.search.response.ApiSearchResponse;
 import com.DA.RiaProject.entities.search.searchid.IdSearchResponse;
@@ -54,7 +55,7 @@ public class OkHttpSearchServiceImpl implements HttpClientService{
     }
 
     @Override
-    public List<IdSearchResponseSlim> searchList(CustomRequest jsonRequest) throws IOException {
+    public ResponseMapper<Integer,List<IdSearchResponseSlim>> searchList(CustomRequest jsonRequest) throws IOException {
         UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         int userId = userService.getUser(principal.getUsername()).getId();
         jsonRequest.setUserId(userId);
@@ -65,14 +66,15 @@ public class OkHttpSearchServiceImpl implements HttpClientService{
                         .bytes(), new TypeReference<>() {
                 });
 
-        List<IdSearchResponseSlim> result = new ArrayList<>();
+        List<IdSearchResponseSlim> list = new ArrayList<>();
         for (String id : response.getResponseResult().getSearchResult().getIds()) {
             final ResponseBody body = getResponse(uriMapper.getIdInfoUri(id))
                     .body();
-            LOG.debug(String.format("exeption here %s\n%s", id, body.toString()));
-            result.add(mapper.readValue(Objects.requireNonNull(body).bytes(), new TypeReference<>() {}));
+            list.add(mapper.readValue(Objects.requireNonNull(body).bytes(), new TypeReference<>() {}));
         }
-
+        ResponseMapper<Integer, List<IdSearchResponseSlim>> result = new ResponseMapper<>();
+        result.setKey(persistent.getId());
+        result.setValue(list);
         return result;
     }
 

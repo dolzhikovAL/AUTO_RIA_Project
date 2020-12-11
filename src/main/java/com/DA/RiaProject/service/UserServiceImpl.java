@@ -6,6 +6,7 @@ import com.DA.RiaProject.entities.User;
 import com.DA.RiaProject.entities.UserRole;
 import com.DA.RiaProject.entities.UserStatus;
 import com.DA.RiaProject.entities.search.request.CustomRequest;
+import com.DA.RiaProject.exceptions.SubscriptionException;
 import com.DA.RiaProject.exceptions.UserEmailExistsException;
 import com.DA.RiaProject.exceptions.UserNicknameExistsException;
 import org.apache.logging.log4j.LogManager;
@@ -76,7 +77,21 @@ public class UserServiceImpl implements UserService {
         LOG.debug(String.format("getListDisabled: size %s", users.size()));
         return users.stream().peek(user -> user.setPassword("*****")).collect(Collectors.toList());
     }
+    @Override
+    public void enableSubscription(Integer requestId) {
+        final CustomRequest updateSubscription = requestRepository.findById(requestId).orElseThrow(() ->
+                new SubscriptionException("Subscription failure"));
+        updateSubscription.setSubscription(true);
+        requestRepository.save(updateSubscription);
+    }
 
+    @Override
+    public void disableSubscription(Integer requestId) {
+        final CustomRequest updateSubscription = requestRepository.findById(requestId).orElseThrow(() ->
+                new SubscriptionException("Subscription disabling failure"));
+        updateSubscription.setSubscription(false);
+        requestRepository.save(updateSubscription);
+    }
     @Override
     public User getUser(String nickname) {
         LOG.info(String.format("getUser(nickname): %s", nickname));

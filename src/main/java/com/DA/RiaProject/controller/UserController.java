@@ -29,7 +29,7 @@ public class UserController {
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
-                }
+    }
 
     @Autowired
     public void setMapper(ObjectMapper mapper) {
@@ -62,6 +62,18 @@ public class UserController {
             @PageableDefault(size = 50, sort = "id", direction = Sort.Direction.DESC) Pageable p) {
         Page<CustomRequest> page = userService.getSearchHistoryPage(getUserId(), p);
         return ResponseEntity.ok(mapper.writeValueAsString(page));
+    }
+
+    @PutMapping(path = "/subscribe")
+    public ResponseEntity<?> getSubscribeToSearchUpdates(@RequestParam("requestId") Integer requestId) {
+        userService.enableSubscription(requestId);
+        return ResponseEntity.ok("Subscribed.");
+    }
+
+    @PutMapping(path = "/unsubscribe")
+    public ResponseEntity<?> disableSubscribeToSearchUpdates(@RequestParam("requestId") Integer requestId) {
+        userService.disableSubscription(requestId);
+        return ResponseEntity.ok("Subscription disabled.");
     }
 
     private int getUserId() {
