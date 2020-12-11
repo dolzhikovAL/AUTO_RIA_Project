@@ -1,6 +1,6 @@
 package com.DA.RiaProject.security;
 
-import com.DA.RiaProject.DAO.UserRepository;
+import com.DA.RiaProject.dao.UserRepository;
 import com.DA.RiaProject.entities.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

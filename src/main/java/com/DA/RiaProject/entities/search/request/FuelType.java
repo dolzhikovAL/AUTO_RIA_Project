@@ -6,17 +6,15 @@ import org.springframework.stereotype.Component;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.util.Arrays;
-import java.util.Optional;
 
 @Component
 @Entity
-@Table(name = "categories")
-public class Category extends BaseEntity {
+@Table(name = "fuel_type")
+public class FuelType extends BaseEntity {
     private String name;
     private int value;
 
-  public Category() {
+    public FuelType() {
     }
 
     @Column(name = "name")
@@ -29,11 +27,9 @@ public class Category extends BaseEntity {
     }
 
     @Column(name = "value")
-
     public int getValue() {
         return value;
     }
-
 
     public void setValue(int value) {
         this.value = value;

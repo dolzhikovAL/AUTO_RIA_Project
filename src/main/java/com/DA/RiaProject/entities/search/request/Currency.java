@@ -6,17 +6,14 @@ import org.springframework.stereotype.Component;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.util.Arrays;
-import java.util.Optional;
 
 @Component
 @Entity
-@Table(name = "categories")
-public class Category extends BaseEntity {
+@Table(name = "currencies")
+public class Currency extends BaseEntity {
     private String name;
-    private int value;
 
-  public Category() {
+    public Currency() {
     }
 
     @Column(name = "name")
@@ -26,16 +23,5 @@ public class Category extends BaseEntity {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    @Column(name = "value")
-
-    public int getValue() {
-        return value;
-    }
-
-
-    public void setValue(int value) {
-        this.value = value;
     }
 }

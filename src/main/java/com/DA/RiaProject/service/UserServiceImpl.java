@@ -1,6 +1,6 @@
 package com.DA.RiaProject.service;
 
-import com.DA.RiaProject.DAO.UserRepository;
+import com.DA.RiaProject.dao.UserRepository;
 import com.DA.RiaProject.entities.User;
 import com.DA.RiaProject.entities.UserRole;
 import com.DA.RiaProject.entities.UserStatus;

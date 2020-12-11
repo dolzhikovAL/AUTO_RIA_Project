@@ -1,4 +1,4 @@
-package com.DA.RiaProject.DAO;
+package com.DA.RiaProject.dao;
 
 import com.DA.RiaProject.entities.User;
 import com.DA.RiaProject.entities.UserStatus;

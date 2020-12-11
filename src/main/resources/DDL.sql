@@ -182,6 +182,7 @@ CREATE TABLE search_history
     price_ot     int,
     price_do     int,
     color_id     int,
+    countpage    int,
     top          int,
     time_created bigint,
     subscription boolean,
