@@ -3,7 +3,10 @@ package com.DA.RiaProject.service;
 import com.DA.RiaProject.entities.User;
 import com.DA.RiaProject.entities.UserRole;
 import com.DA.RiaProject.entities.UserStatus;
+import com.DA.RiaProject.entities.search.request.CustomRequest;
 import com.DA.RiaProject.exceptions.UserEmailExistsException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -20,5 +23,5 @@ public interface UserService {
     List<User> getListNew();
     List<User> getListActive();
     List<User> getListDisabled();
-
+    Page<CustomRequest> getSearchHistoryPage(int userId, Pageable p);
 }

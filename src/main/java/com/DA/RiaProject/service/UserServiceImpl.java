@@ -1,14 +1,18 @@
 package com.DA.RiaProject.service;
 
+import com.DA.RiaProject.dao.CustomRequestRepository;
 import com.DA.RiaProject.dao.UserRepository;
 import com.DA.RiaProject.entities.User;
 import com.DA.RiaProject.entities.UserRole;
 import com.DA.RiaProject.entities.UserStatus;
+import com.DA.RiaProject.entities.search.request.CustomRequest;
 import com.DA.RiaProject.exceptions.UserEmailExistsException;
 import com.DA.RiaProject.exceptions.UserNicknameExistsException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +24,11 @@ public class UserServiceImpl implements UserService {
     private static final Logger LOG = LogManager.getLogger(UserServiceImpl.class);
     private UserRepository userRepository;
     private BCryptPasswordEncoder encoder;
+    private CustomRequestRepository requestRepository;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, CustomRequestRepository requestRepository) {
         this.userRepository = userRepository;
+        this.requestRepository = requestRepository;
     }
 
     @Autowired
@@ -135,5 +141,11 @@ public class UserServiceImpl implements UserService {
             throw new UserEmailExistsException(
                     String.format("User with such email = '%s' already exists.", user.getEmail()));
         }
+    }
+
+
+    @Override
+    public Page<CustomRequest> getSearchHistoryPage(int userId, Pageable p) {
+        return requestRepository.getByUserId(userId, p);
     }
 }

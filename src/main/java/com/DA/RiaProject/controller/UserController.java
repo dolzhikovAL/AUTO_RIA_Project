@@ -7,6 +7,10 @@ import com.DA.RiaProject.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,14 +24,12 @@ import java.util.List;
 @RequestMapping(path = "/user")
 public class UserController {
     private UserService userService;
-    private CustomRequestRepository requestRepository;
     private ObjectMapper mapper;
 
     @Autowired
-    public UserController(UserService userService, CustomRequestRepository requestRepository) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.requestRepository = requestRepository;
-    }
+                }
 
     @Autowired
     public void setMapper(ObjectMapper mapper) {
@@ -56,9 +58,10 @@ public class UserController {
 
     @SneakyThrows
     @GetMapping(path = "/searchHistory")
-    public ResponseEntity<?> getSearchHistory() {
-        List<CustomRequest> requests = requestRepository.getAllByUserId(getUserId());
-        return ResponseEntity.ok(mapper.writeValueAsString(requests));
+    public ResponseEntity<?> getSearchHistory(
+            @PageableDefault(size = 50, sort = "id", direction = Sort.Direction.DESC) Pageable p) {
+        Page<CustomRequest> page = userService.getSearchHistoryPage(getUserId(), p);
+        return ResponseEntity.ok(mapper.writeValueAsString(page));
     }
 
     private int getUserId() {
